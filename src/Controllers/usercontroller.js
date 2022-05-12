@@ -74,7 +74,36 @@ router.put("/cartitem/:id",async (req,res)=>{
 
 
 
+    router.delete("/cartitem/:id",async (req,res)=>{
+        try{
+            console.log(req.query.index)
+        
+           const myuser=await User.findById(req.params.id).lean().exec()
 
+        
+         let cart=  myuser.cart.filter((e,i)=>{
+
+          return  i!=req.query.index
+          
+           
+           })
+        
+          const user=await User.findByIdAndUpdate(req.params.id,{"cart":cart},{new:true})
+
+          res.status(201).send(user)
+
+
+        
+        }
+       
+        catch(err)
+        {
+            console.log(err)
+            res.status(500).send(err)
+        
+        }
+        
+        })
 
 
 
