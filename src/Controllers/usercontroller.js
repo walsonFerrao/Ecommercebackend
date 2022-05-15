@@ -106,6 +106,47 @@ router.put("/cartitem/:id",async (req,res)=>{
         })
 
 
+        router.get("/sum/:id",async (req,res)=>{
+            try{
+                console.log(req.params.id,"id checl")
+            
+               const myuser=await User.findById(req.params.id).lean().exec()
+               console.log(myuser,"uo")
+                let sum=0
+               myuser?.cart?.forEach((e)=>{sum=sum+Number(e?.price?.split('-')[0].replace("£",""))})
+               console.log(sum)
+              res.status(201).send({sum:sum})
+    
+            }
+           
+            catch(err)  
+            {
+                console.log(err)
+                res.status(500).send(err)
+            
+            }
+            
+            })
+
+            router.post("/reset/:id",async (req,res)=>{
+                try{
+                    console.log(req.params.id,"id checl")
+                
+                   const myuser=await User.findByIdAndUpdate(req.params.id,{cart:[]},{new:true}).lean().exec()
+                   
+                  res.status(201).send(myuser)
+         
+                }
+               
+                catch(err)  
+                {
+                    console.log(err)
+                    res.status(500).send(err)
+                
+                }
+                
+                })
+
 
 
 module.exports=router
