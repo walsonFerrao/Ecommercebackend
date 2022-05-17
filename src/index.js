@@ -3,6 +3,7 @@ const express=require("express")
 const app=express()
 const cors=require("cors")
 const mongoose=require("mongoose")
+const products=require('./Controllers/Productcontroller')
 
 require("dotenv").config()
 const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST)
@@ -12,6 +13,7 @@ const user=require("./Controllers/usercontroller")
 app.use(express.json())
 app.use(cors())
 app.use("/users",user)
+app.use('/products',products)
 
 
 app.post("/payment", cors(), async (req, res) => {
